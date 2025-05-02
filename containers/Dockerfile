@@ -1,17 +1,21 @@
 #  SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-FROM mcr.microsoft.com/devcontainers/cpp:1-ubuntu-24.04
+ARG base_image=mcr.microsoft.com/devcontainers/cpp:1-ubuntu-24.04
+FROM ${base_image}
+
+# Create the vscode user
+RUN bash <<EOF
+    if ! id "vscode" &>/dev/null; then
+        apt-get update && apt-get install -y sudo adduser
+        useradd -ms /bin/bash -p "" vscode && usermod -aG sudo vscode
+    fi
+EOF
 
 USER vscode
 WORKDIR /tmp
 
-# Latest CMake needed for most of the beman libraries,
-# so we need to install via kitware's apt repo
-RUN bash <<EOF
-    wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | sudo tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null
-    echo 'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ noble main' | sudo tee /etc/apt/sources.list.d/kitware.list >/dev/null
-    sudo apt-get update && sudo apt-get install -y cmake
-EOF
+COPY install_sys.sh .
+RUN bash install_sys.sh
 
 # Newer gcc/ llvm is needed to avoid ASAN Stalling, which is turned on by default across beman projects.
 # See: https://github.com/google/sanitizers/issues/1614
@@ -22,7 +26,7 @@ ARG compiler_version=14
 COPY install_compiler.sh .
 RUN bash install_compiler.sh ${compiler_kind} ${compiler_version}
 
-# Needed for recent exemplar
+# Common dependency: google-test
 RUN sudo apt-get install -y libgtest-dev
 
 # Pre-commit is beman library's standard linting tool
