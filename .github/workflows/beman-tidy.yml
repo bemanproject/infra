@@ -1,0 +1,31 @@
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+name: Run Beman Tidy Tests
+
+on:
+  workflow_dispatch:
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies (production)
+        run: |
+          make -C tools/beman-tidy install
+
+      - name: Install dependencies (development)
+        run: |
+          make -C tools/beman-tidy install-dev
+
+      - name: Run linter
+        run: |
+          echo "Running linter..."
+          make -C tools/beman-tidy self-lint
+
+      - name: Run tests
+        run: |
+          make -C tools/beman-tidy test

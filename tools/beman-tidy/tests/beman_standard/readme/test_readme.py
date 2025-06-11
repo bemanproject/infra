@@ -1,0 +1,117 @@
+#!/usr/bin/python3
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+import pytest
+from pathlib import Path
+
+from tests.utils.file_testcase_runners import file_testcases_run_valid, file_testcases_run_invalid, file_testcases_run_fix_invalid
+# Actual tested checks.
+from lib.checks.beman_standard.readme import ReadmeTitleCheck, ReadmeBadgesCheck, ReadmeLibraryStatusCheck
+
+
+def test__README_TITLE__valid(repo_info, beman_standard_check_config):
+    """Test that a valid README.md title passes the check"""
+    valid_readme_paths = [
+        # Title: # beman.exemplar: A Beman Library Exemplar
+        Path("tests/beman_standard/readme/data/valid/README-v1.md"),
+        # Title: # beman.exemplar: Another Beman Library
+        Path("tests/beman_standard/readme/data/valid/README-v2.md"),
+        # Title: # beman.exemplar: Awesome Beman Library
+        Path("tests/beman_standard/readme/data/valid/README-v3.md"),
+        # Title: # beman.exemplar: The Most Awesome Beman Library
+        Path("tests/beman_standard/readme/data/valid/README-v4.md"),
+    ]
+
+    file_testcases_run_valid(valid_readme_paths, ReadmeTitleCheck,
+                             repo_info, beman_standard_check_config)
+
+
+def test__README_TITLE__invalid(repo_info, beman_standard_check_config):
+    """Test that an invalid README.md title fails the check"""
+    invalid_readme_paths = [
+        Path("tests/beman_standard/readme/data/invalid/invalid.md"),
+        Path("tests/beman_standard/readme/data/invalid/invalid-title-v1.md"),
+        Path("tests/beman_standard/readme/data/invalid/invalid-title-v2.md"),
+        Path("tests/beman_standard/readme/data/invalid/invalid-title-v3.md"),
+        Path("tests/beman_standard/readme/data/invalid/invalid-title-v4.md"),
+    ]
+
+    file_testcases_run_invalid(invalid_readme_paths, ReadmeTitleCheck,
+                               repo_info, beman_standard_check_config)
+
+
+def test__README_TITLE__fix_invalid(repo_info, beman_standard_check_config):
+    """Test that the fix method corrects an invalid README.md title"""
+    invalid_readme_paths = [
+        Path("tests/beman_standard/readme/data/invalid/invalid-title-v1.md"),
+        Path("tests/beman_standard/readme/data/invalid/invalid-title-v2.md"),
+        Path("tests/beman_standard/readme/data/invalid/invalid-title-v3.md"),
+        Path("tests/beman_standard/readme/data/invalid/invalid-title-v4.md"),
+    ]
+
+    file_testcases_run_fix_invalid(
+        invalid_readme_paths, ReadmeTitleCheck, repo_info, beman_standard_check_config)
+
+
+def test__README_BADGES__valid(repo_info, beman_standard_check_config, valid_readme_path):
+    """Test that a valid README.md badges passes the check"""
+    valid_readme_paths = [
+        Path("tests/beman_standard/readme/data/valid/README-v1.md"),
+        Path("tests/beman_standard/readme/data/valid/README-v2.md"),
+        Path("tests/beman_standard/readme/data/valid/README-v3.md"),
+        Path("tests/beman_standard/readme/data/valid/README-v4.md"),
+    ]
+
+    file_testcases_run_valid(valid_readme_paths, ReadmeBadgesCheck,
+                             repo_info, beman_standard_check_config)
+
+
+def test__README_BADGES__invalid(repo_info, beman_standard_check_config, invalid_readme_path):
+    """Test that an invalid README.md badges fails the check"""
+    invalid_readme_paths = [
+        Path("tests/beman_standard/readme/data/invalid/invalid.md"),
+        Path("tests/beman_standard/readme/data/invalid/invalid-badge-v1.md"),
+        Path("tests/beman_standard/readme/data/invalid/invalid-badge-v2.md"),
+        Path("tests/beman_standard/readme/data/invalid/invalid-badge-v3.md"),
+    ]
+
+    file_testcases_run_invalid(invalid_readme_paths, ReadmeBadgesCheck,
+                               repo_info, beman_standard_check_config)
+
+
+@pytest.mark.skip(reason="NOT implemented")
+def test__README_BADGES__fix_invalid(repo_info, beman_standard_check_config, invalid_readme_path, valid_readme_path):
+    """Test that the fix method corrects an invalid README.md badges"""
+    pass
+
+
+def test__README_LIBRARY_STATUS__valid(repo_info, beman_standard_check_config, valid_readme_path):
+    """Test that a valid README.md library status passes the check"""
+    valid_readme_paths = [
+        Path("tests/beman_standard/readme/data/valid/README-v1.md"),
+        Path("tests/beman_standard/readme/data/valid/README-v2.md"),
+        Path("tests/beman_standard/readme/data/valid/README-v3.md"),
+        Path("tests/beman_standard/readme/data/valid/README-v4.md"),
+    ]
+
+    file_testcases_run_valid(valid_readme_paths, ReadmeLibraryStatusCheck,
+                             repo_info, beman_standard_check_config)
+
+
+def test__README_LIBRARY_STATUS__invalid(repo_info, beman_standard_check_config):
+    """Test that an invalid README.md library status fails the check"""
+    invalid_readme_paths = [
+        Path("tests/beman_standard/readme/data/invalid/invalid.md"),
+        Path("tests/beman_standard/readme/data/invalid/invalid-status-line-v1.md"),
+        Path("tests/beman_standard/readme/data/invalid/invalid-status-line-v2.md"),
+        Path("tests/beman_standard/readme/data/invalid/invalid-status-line-v3.md"),
+    ]
+
+    file_testcases_run_invalid(invalid_readme_paths, ReadmeLibraryStatusCheck,
+                               repo_info, beman_standard_check_config)
+
+
+@pytest.mark.skip(reason="NOT implemented")
+def test__README_LIBRARY_STATUS__fix_invalid(repo_info, beman_standard_check_config, invalid_readme_path, valid_readme_path):
+    """Test that the fix method corrects an invalid README.md library status"""
+    pass

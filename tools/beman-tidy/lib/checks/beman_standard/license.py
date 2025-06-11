@@ -1,0 +1,6 @@
+#!/usr/bin/python3
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+# TODO LICENSE.APPROVED
+# TODO LICENSE.APACHE_LLVM
+# TODO LICENSE.CRITERIA
