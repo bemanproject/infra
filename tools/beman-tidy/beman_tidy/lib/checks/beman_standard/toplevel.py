@@ -3,7 +3,7 @@
 
 from ..base.base_check import BaseCheck
 from ..base.file_base_check import FileBaseCheck
-from ..base.readme_base_check import ReadmeBaseCheck
+from .readme import ReadmeBaseCheck
 from ..system.registry import register_beman_standard_check
 
 # [TOPLEVEL.*] checks category.
