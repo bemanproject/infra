@@ -20,7 +20,6 @@ class BemanTreeDirectoryCheck(DirectoryBaseCheck):
 # TODO DIRECTORY.IMPLEMENTATION_HEADERS
 
 
-# TODO DIRECTORY.SOURCES
 @register_beman_standard_check("DIRECTORY.SOURCES")
 class DirectorySourcesCheck(BemanTreeDirectoryCheck):
     """
@@ -39,8 +38,22 @@ class DirectorySourcesCheck(BemanTreeDirectoryCheck):
         pass
 
 
-# TODO DIRECTORY.TESTS
+@register_beman_standard_check("DIRECTORY.TESTS")
+class DirectoryTestsCheck(BemanTreeDirectoryCheck):
+    """
+    Check if the tests directory is tests/beman/<short_name>.
+    """
+    def __init__(self, repo_info, beman_standard_check_config):
+        super().__init__(repo_info, beman_standard_check_config, "tests")
 
+    def check(self):
+        return self.pre_check()
+
+    def fix(self):
+        """
+        TODO: Implement the fix.
+        """
+        pass
 
 # TODO DIRECTORY.EXAMPLES
 
