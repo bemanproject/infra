@@ -16,6 +16,7 @@ class ToplevelBaseCheck(BaseCheck):
     def __init__(self, repo_info, beman_standard_check_config):
         super().__init__(repo_info, beman_standard_check_config)
 
+
 @register_beman_standard_check("TOPLEVEL.CMAKE")
 class ToplevelCmakeCheck(ToplevelBaseCheck):
     def __init__(self, repo_info, beman_standard_check_config):
@@ -33,7 +34,7 @@ class ToplevelCmakeCheck(ToplevelBaseCheck):
             return False
 
         try:
-            with open(self.path, 'r') as file:
+            with open(self.path, "r") as file:
                 if len(file.read()) == 0:
                     self.log("The top-level CMake file is empty.")
                     return False
@@ -47,6 +48,7 @@ class ToplevelCmakeCheck(ToplevelBaseCheck):
         # TODO: Implement the fix.
         pass
 
+
 @register_beman_standard_check("TOPLEVEL.LICENSE")
 class ToplevelLicenseCheck(FileBaseCheck):
     def __init__(self, repo_info, beman_standard_check_config):
@@ -56,9 +58,12 @@ class ToplevelLicenseCheck(FileBaseCheck):
         # since this class simply checks for the existence of a LICENSE file,
         # there's nothing more to do than the default pre-check.
         return super().pre_check()
+
     def fix(self):
-        # TODO: Implement the fix.
-        pass
+        self.log(
+            "Please add a LICENSE file to the repository. See https://github.com/bemanproject/beman/blob/main/docs/BEMAN_STANDARD.md#license for more information."
+        )
+
 
 @register_beman_standard_check("TOPLEVEL.README")
 class ToplevelReadmeCheck(ReadmeBaseCheck):
@@ -69,5 +74,8 @@ class ToplevelReadmeCheck(ReadmeBaseCheck):
         # since this class simply checks for the existence of a README file,
         # there's nothing more to do than the default pre-check.
         return super().pre_check()
+
     def fix(self):
-        self.log("Please write a README file.")
+        self.log(
+            "Please write a README file. See https://github.com/bemanproject/beman/blob/main/docs/BEMAN_STANDARD.md#readmemd for the desired format."
+        )
