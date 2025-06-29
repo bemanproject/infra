@@ -57,7 +57,6 @@ class ToplevelLicenseCheck(FileBaseCheck):
         # there's nothing more to do than the default pre-check.
         return super().pre_check()
         return True
-    
     def fix(self):
         # TODO: Implement the fix.
         pass
@@ -71,7 +70,5 @@ class ToplevelReadmeCheck(ReadmeBaseCheck):
         # since this class simply checks for the existence of a README file,
         # there's nothing more to do than the default pre-check.
         return super().pre_check()
-    
     def fix(self):
         self.log("Please write a README file.")
-
