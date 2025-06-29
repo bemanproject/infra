@@ -73,6 +73,5 @@ class ToplevelReadmeCheck(ReadmeBaseCheck):
         return super().pre_check()
     
     def fix(self):
-        # TODO: Implement the fix.
-        pass
+        self.log("Please write a README file.")
 
