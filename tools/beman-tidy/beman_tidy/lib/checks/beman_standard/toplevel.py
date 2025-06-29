@@ -75,7 +75,7 @@ class ToplevelLicenseCheck(FileBaseCheck):
         pass
 
 @register_beman_standard_check("TOPLEVEL.README")
-class ToplevelLicenseCheck(ReadmeBaseCheck):
+class ToplevelReadmeCheck(ReadmeBaseCheck):
     def __init__(self, repo_info, beman_standard_check_config):
         super().__init__(repo_info, beman_standard_check_config)
 
