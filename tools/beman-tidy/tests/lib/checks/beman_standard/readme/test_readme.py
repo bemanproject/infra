@@ -1,16 +1,26 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 import pytest
 from pathlib import Path
 
-from tests.utils.file_testcase_runners import file_testcases_run_valid, file_testcases_run_invalid, file_testcases_run_fix_invalid
+from tests.utils.file_testcase_runners import (
+    file_testcases_run_valid,
+    file_testcases_run_invalid,
+    file_testcases_run_fix_invalid,
+)
+
 # Actual tested checks.
-from beman_tidy.lib.checks.beman_standard.readme import ReadmeTitleCheck, ReadmeBadgesCheck, ReadmeLibraryStatusCheck
+from beman_tidy.lib.checks.beman_standard.readme import (
+    ReadmeTitleCheck,
+    ReadmeBadgesCheck,
+    ReadmeLibraryStatusCheck,
+)
 
 test_data_prefix = "tests/lib/checks/beman_standard/readme/data"
 valid_prefix = f"{test_data_prefix}/valid"
 invalid_prefix = f"{test_data_prefix}/invalid"
+
 
 def test__README_TITLE__valid(repo_info, beman_standard_check_config):
     """Test that a valid README.md title passes the check"""
@@ -25,8 +35,9 @@ def test__README_TITLE__valid(repo_info, beman_standard_check_config):
         Path(f"{valid_prefix}/README-v4.md"),
     ]
 
-    file_testcases_run_valid(valid_readme_paths, ReadmeTitleCheck,
-                             repo_info, beman_standard_check_config)
+    file_testcases_run_valid(
+        valid_readme_paths, ReadmeTitleCheck, repo_info, beman_standard_check_config
+    )
 
 
 def test__README_TITLE__invalid(repo_info, beman_standard_check_config):
@@ -39,8 +50,9 @@ def test__README_TITLE__invalid(repo_info, beman_standard_check_config):
         Path(f"{invalid_prefix}/invalid-title-v4.md"),
     ]
 
-    file_testcases_run_invalid(invalid_readme_paths, ReadmeTitleCheck,
-                               repo_info, beman_standard_check_config)
+    file_testcases_run_invalid(
+        invalid_readme_paths, ReadmeTitleCheck, repo_info, beman_standard_check_config
+    )
 
 
 def test__README_TITLE__fix_invalid(repo_info, beman_standard_check_config):
@@ -53,7 +65,8 @@ def test__README_TITLE__fix_invalid(repo_info, beman_standard_check_config):
     ]
 
     file_testcases_run_fix_invalid(
-        invalid_readme_paths, ReadmeTitleCheck, repo_info, beman_standard_check_config)
+        invalid_readme_paths, ReadmeTitleCheck, repo_info, beman_standard_check_config
+    )
 
 
 def test__README_BADGES__valid(repo_info, beman_standard_check_config):
@@ -65,8 +78,9 @@ def test__README_BADGES__valid(repo_info, beman_standard_check_config):
         Path(f"{valid_prefix}/README-v4.md"),
     ]
 
-    file_testcases_run_valid(valid_readme_paths, ReadmeBadgesCheck,
-                             repo_info, beman_standard_check_config)
+    file_testcases_run_valid(
+        valid_readme_paths, ReadmeBadgesCheck, repo_info, beman_standard_check_config
+    )
 
 
 def test__README_BADGES__invalid(repo_info, beman_standard_check_config):
@@ -78,8 +92,9 @@ def test__README_BADGES__invalid(repo_info, beman_standard_check_config):
         Path(f"{invalid_prefix}/invalid-badge-v3.md"),
     ]
 
-    file_testcases_run_invalid(invalid_readme_paths, ReadmeBadgesCheck,
-                               repo_info, beman_standard_check_config)
+    file_testcases_run_invalid(
+        invalid_readme_paths, ReadmeBadgesCheck, repo_info, beman_standard_check_config
+    )
 
 
 @pytest.mark.skip(reason="NOT implemented")
@@ -97,8 +112,12 @@ def test__README_LIBRARY_STATUS__valid(repo_info, beman_standard_check_config):
         Path(f"{valid_prefix}/README-v4.md"),
     ]
 
-    file_testcases_run_valid(valid_readme_paths, ReadmeLibraryStatusCheck,
-                             repo_info, beman_standard_check_config)
+    file_testcases_run_valid(
+        valid_readme_paths,
+        ReadmeLibraryStatusCheck,
+        repo_info,
+        beman_standard_check_config,
+    )
 
 
 def test__README_LIBRARY_STATUS__invalid(repo_info, beman_standard_check_config):
@@ -110,8 +129,12 @@ def test__README_LIBRARY_STATUS__invalid(repo_info, beman_standard_check_config)
         Path(f"{invalid_prefix}/invalid-status-line-v3.md"),
     ]
 
-    file_testcases_run_invalid(invalid_readme_paths, ReadmeLibraryStatusCheck,
-                               repo_info, beman_standard_check_config)
+    file_testcases_run_invalid(
+        invalid_readme_paths,
+        ReadmeLibraryStatusCheck,
+        repo_info,
+        beman_standard_check_config,
+    )
 
 
 @pytest.mark.skip(reason="NOT implemented")
