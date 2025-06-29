@@ -100,7 +100,7 @@ def load_beman_standard_config(path=get_beman_standard_config_path()):
                 # TODO: Implement the regex check.
                 pass
             elif "file_name" in entry:
-                pass
+                check_config["file_name"] = entry["file_name"]
             elif "directory_name" in entry:
                 pass
             elif "values" in entry:
