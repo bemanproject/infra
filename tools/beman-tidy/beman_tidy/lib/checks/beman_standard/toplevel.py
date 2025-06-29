@@ -56,7 +56,6 @@ class ToplevelLicenseCheck(FileBaseCheck):
         # since this class simply checks for the existence of a LICENSE file,
         # there's nothing more to do than the default pre-check.
         return super().pre_check()
-        return True
     def fix(self):
         # TODO: Implement the fix.
         pass
