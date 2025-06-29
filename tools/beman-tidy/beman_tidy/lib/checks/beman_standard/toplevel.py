@@ -53,21 +53,9 @@ class ToplevelLicenseCheck(FileBaseCheck):
         super().__init__(repo_info, beman_standard_check_config)
 
     def check(self):
-        self.path = self.repo_path / self.config["file_name"]
-
-        if not self.path.exists():
-            self.log("The LICENSE file does not exist.")
-            return False
-
-        try:
-            with open(self.path, 'r') as file:
-                if len(file.read()) == 0:
-                    self.log("The LICENSE file is empty.")
-                    return False
-        except Exception:
-            self.log("Failed to read the LICENSE file.")
-            return False
-
+        # since this class simply checks for the existence of a LICENSE file,
+        # there's nothing more to do than the default pre-check.
+        return super().pre_check()
         return True
     
     def fix(self):
@@ -80,22 +68,9 @@ class ToplevelReadmeCheck(ReadmeBaseCheck):
         super().__init__(repo_info, beman_standard_check_config)
 
     def check(self):
-        self.path = self.repo_path / self.config["file_name"]
-
-        if not self.path.exists():
-            self.log("The README file does not exist.")
-            return False
-
-        try:
-            with open(self.path, 'r') as file:
-                if len(file.read()) == 0:
-                    self.log("The README file is empty.")
-                    return False
-        except Exception:
-            self.log("Failed to read the README file.")
-            return False
-
-        return True
+        # since this class simply checks for the existence of a README file,
+        # there's nothing more to do than the default pre-check.
+        return super().pre_check()
     
     def fix(self):
         # TODO: Implement the fix.
