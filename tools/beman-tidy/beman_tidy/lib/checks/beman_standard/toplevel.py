@@ -50,7 +50,7 @@ class ToplevelCmakeCheck(ToplevelBaseCheck):
 @register_beman_standard_check("TOPLEVEL.LICENSE")
 class ToplevelLicenseCheck(FileBaseCheck):
     def __init__(self, repo_info, beman_standard_check_config):
-        super().__init__(repo_info, beman_standard_check_config)
+        super().__init__(repo_info, beman_standard_check_config, "LICENSE")
 
     def check(self):
         # since this class simply checks for the existence of a LICENSE file,
