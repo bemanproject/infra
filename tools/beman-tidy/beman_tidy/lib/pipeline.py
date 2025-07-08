@@ -76,7 +76,7 @@ def run_checks_pipeline(checks_to_run, args, beman_standard_check_config):
     def run_pipeline_helper():
         # Internal checks
         if args.fix_inplace:
-            run_check(DisallowFixInplaceAndUnstagedChangesCheck, log_enabled=False)
+            run_check(DisallowFixInplaceAndUnstagedChangesCheck, log_enabled=True)
 
         implemented_checks = get_registered_beman_standard_checks()
         all_checks = beman_standard_check_config
