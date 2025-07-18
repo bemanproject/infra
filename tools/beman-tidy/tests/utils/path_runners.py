@@ -52,6 +52,8 @@ def run_check_for_each_path(
         if os.path.isdir(path):
             # For repo checks, modify the repo_info to point to the test directory
             repo_info["top_level"] = Path(path)
+            # Set the last part of the path as the repository name
+            repo_info["name"] = path.parts[-1]
 
         check_instance = check_class(repo_info, beman_standard_check_config)
 
