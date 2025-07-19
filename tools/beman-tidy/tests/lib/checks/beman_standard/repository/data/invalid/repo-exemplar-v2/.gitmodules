@@ -1,0 +1,9 @@
+[submodule "dummy"]
+	path = dummy
+	url = https://github.com/dummy.git
+[submodule "wg21"]
+	path = wg21
+	url = https://github.com/mpark/wg21.git
+[submodule "papers"]
+	path = papers
+	url = https://github.com/cplusplus/papers

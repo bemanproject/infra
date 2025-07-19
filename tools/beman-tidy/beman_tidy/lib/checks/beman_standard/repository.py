@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
+import re
+import textwrap
+
 from ..base.file_base_check import FileBaseCheck
 from ..base.base_check import BaseCheck
 from ..system.registry import register_beman_standard_check
@@ -49,4 +52,42 @@ class RepositoryDefaultBranchCheck(BaseCheck):
         )
 
 
-# TODO REPOSITORY.DISALLOW_GIT_SUBMODULES
+@register_beman_standard_check("REPOSITORY.DISALLOW_GIT_SUBMODULES")
+class RepositoryDisallowGitSubmodulesCheck(BaseCheck):
+    def __init__(self, repo_info, beman_standard_check_config):
+        super().__init__(repo_info, beman_standard_check_config)
+
+    def check(self):
+        # Regex pattern to match "wg21" submodule
+        regex = re.compile(
+            textwrap.dedent(r"""
+                ^\[submodule \"wg21\"]
+                \tpath = wg21
+                \turl = https://github.com/mpark/wg21.git$
+            """).strip()
+        )
+
+        gitsubmodules_path = self.repo_path / ".gitmodules"
+
+        # Check if .gitmodules file exists and is different from wg21
+        if gitsubmodules_path.exists():
+            with open(gitsubmodules_path, "r") as f:
+                content = f.read()
+
+            if not regex.match(content):
+                self.log(
+                    "The repository should not use git submodules. Please remove them. "
+                    "Known exception: wg21. "
+                    "See https://github.com/bemanproject/beman/blob/main/docs/BEMAN_STANDARD.md#repositorydisallow_git_submodules for more information."
+                )
+                return False
+
+        # Check passes if .gitmodules file doesn't exist
+        return True
+
+    def fix(self):
+        self.log(
+            "Please remove git submodules. "
+            "Known exception: wg21. "
+            "See https://github.com/bemanproject/beman/blob/main/docs/BEMAN_STANDARD.md#repositorydisallow_git_submodules for more information."
+        )
