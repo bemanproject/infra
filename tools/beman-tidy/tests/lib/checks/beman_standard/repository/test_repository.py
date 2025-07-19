@@ -13,11 +13,57 @@ from tests.utils.path_runners import (
 from beman_tidy.lib.checks.beman_standard.repository import (
     RepositoryCodeownersCheck,
     RepositoryDefaultBranchCheck,
+    RepositoryNameCheck,
 )
 
 test_data_prefix = "tests/lib/checks/beman_standard/repository/data"
 valid_prefix = f"{test_data_prefix}/valid"
 invalid_prefix = f"{test_data_prefix}/invalid"
+
+
+def test__REPOSITORY_NAME__valid(repo_info, beman_standard_check_config):
+    """
+    Test that repositories with valid repository names pass the check.
+    """
+    # Create mock repo info with valid repository names
+    valid_repo_infos = [
+        repo_info.copy() | {"name": "exemplar"},
+        repo_info.copy() | {"name": "optional"},
+        repo_info.copy() | {"name": "smart_pointer"},
+    ]
+
+    run_check_for_each_repo_info(
+        True,
+        RepositoryNameCheck,
+        valid_repo_infos,
+        beman_standard_check_config,
+    )
+
+
+def test__REPOSITORY_NAME__invalid(repo_info, beman_standard_check_config):
+    """
+    Test that repositories with invalid repository names fail the check.
+    """
+    # Create mock repo info with invalid repository names
+    invalid_repo_infos = [
+        repo_info.copy() | {"name": "beman.exemplar"},
+        repo_info.copy() | {"name": "exemplar26"},
+        repo_info.copy() | {"name": "beman.exemplar26"},
+        repo_info.copy() | {"name": "exemplar_"},
+        repo_info.copy() | {"name": "_exemplar"},
+    ]
+
+    run_check_for_each_repo_info(
+        False,
+        RepositoryNameCheck,
+        invalid_repo_infos,
+        beman_standard_check_config,
+    )
+
+
+@pytest.mark.skip(reason="NOT implemented")
+def test__REPOSITORY_NAME__fix_inplace(repo_info, beman_standard_check_config):
+    pass
 
 
 def test__REPOSITORY_CODEOWNERS__valid(repo_info, beman_standard_check_config):
