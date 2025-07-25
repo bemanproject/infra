@@ -87,7 +87,39 @@ class DirectorySourcesCheck(BemanTreeDirectoryCheck):
 # TODO DIRECTORY.TESTS
 
 
-# TODO DIRECTORY.EXAMPLES
+@register_beman_standard_check("DIRECTORY.EXAMPLES")
+class DirectoryExamplesCheck(DirectoryBaseCheck):
+    def __init__(self, repo_info, beman_standard_check_config):
+        super().__init__(repo_info, beman_standard_check_config, "examples")
+
+    def check(self):
+        """
+        Check if the all example files reside within examples/ directory.
+        Each project must have at least one relevant example.
+        Example:
+        examples
+        ├── CMakeLists.txt
+        ├── identity_as_default_projection.cpp
+        └── identity_direct_usage.cpp
+        """
+        # Check if the examples/ directory contains at least one relevant example.
+        cpp_files = list(self.path.glob("*.cpp"))
+        cmake_files = list(self.path.glob("CMakeLists.txt"))
+        if len(cpp_files) == 0 or len(cmake_files) == 0:
+            self.log(
+                "Missing relevant example files in examples/ directory. "
+                "See https://github.com/bemanproject/beman/blob/main/docs/BEMAN_STANDARD.md#directoryexamples for more information."
+            )
+            return False
+
+        # Check passes if the examples/ directory exists and contains at least one relevant example.
+        return True
+
+    def fix(self):
+        self.log(
+            "Please add a relevant example to the examples/ directory. "
+            "See https://github.com/bemanproject/beman/blob/main/docs/BEMAN_STANDARD.md#directoryexamples for more information."
+        )
 
 
 @register_beman_standard_check("DIRECTORY.DOCS")
