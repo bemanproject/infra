@@ -12,6 +12,7 @@ from tests.utils.path_runners import (
 from beman_tidy.lib.checks.beman_standard.directory import (
     DirectorySourcesCheck,
     DirectoryDocsCheck,
+    DirectoryPapersCheck,
 )
 
 test_data_prefix = "tests/lib/checks/beman_standard/directory/data"
@@ -122,4 +123,53 @@ def test__DIRECTORY_DOCS__invalid(repo_info, beman_standard_check_config):
 
 @pytest.mark.skip(reason="NOT implemented")
 def test__DIRECTORY_DOCS__fix_inplace(repo_info, beman_standard_check_config):
+    pass
+
+
+def test__DIRECTORY_PAPERS__valid(repo_info, beman_standard_check_config):
+    """
+    Test that repositories with valid paper structure pass the check.
+    """
+    valid_papers_paths = [
+        # exemplar/ repo without papers/ dir.
+        Path(f"{valid_prefix}/repo-exemplar-v2/"),
+        # exemplar/ repo with papers/ dir.
+        Path(f"{valid_prefix}/repo-exemplar-v3/"),
+    ]
+
+    run_check_for_each_path(
+        True,
+        valid_papers_paths,
+        DirectoryPapersCheck,
+        repo_info,
+        beman_standard_check_config,
+    )
+
+
+def test__DIRECTORY_PAPERS__invalid(repo_info, beman_standard_check_config):
+    """
+    Test that repositories with invalid paper structure fail the check.
+    """
+    invalid_papers_paths = [
+        # Misplaced paper-related files in root directory.
+        Path(f"{invalid_prefix}/repo-exemplar-v1"),
+        # Misplaced P2988 directory.
+        Path(f"{invalid_prefix}/repo-exemplar-v2"),
+        # Misplaced wg21 directory.
+        Path(f"{invalid_prefix}/repo-exemplar-v3"),
+        # Wrong name for papers/ directory.
+        Path(f"{invalid_prefix}/repo-exemplar-v4"),
+    ]
+
+    run_check_for_each_path(
+        False,
+        invalid_papers_paths,
+        DirectoryPapersCheck,
+        repo_info,
+        beman_standard_check_config,
+    )
+
+
+@pytest.mark.skip(reason="NOT implemented")
+def test__DIRECTORY_PAPERS__fix_inplace(repo_info, beman_standard_check_config):
     pass
