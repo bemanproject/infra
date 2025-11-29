@@ -1,0 +1,10 @@
+---
+BasedOnStyle:     LLVM
+IndentWidth:      2
+UseTab:           Never
+---
+Language:         Cpp
+ColumnLimit:      119
+IndentWidth:      4
+Standard:         Auto
+PointerAlignment: Left
