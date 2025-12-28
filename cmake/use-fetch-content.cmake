@@ -117,18 +117,22 @@ function(BemanInfra_provideDependency method package_name)
         endif()
 
         # Get the "git_repository" field and store it in BemanInfra_repo
-        string(
-            JSON
-            BemanInfra_repo
-            ERROR_VARIABLE BemanInfra_error
-            GET "${BemanInfra_depObj}"
-            "git_repository"
-        )
-        if(BemanInfra_error)
-            message(
-                FATAL_ERROR
-                "${BemanInfra_errorPrefix}: ${BemanInfra_error}"
+        if(DEFINED "BEMANINFRA_${BemanInfra_name}_REPO")
+            set(BemanInfra_repo ${BEMANINFRA_${BemanInfra_name}_REPO})
+        else()
+            string(
+                JSON
+                BemanInfra_repo
+                ERROR_VARIABLE BemanInfra_error
+                GET "${BemanInfra_depObj}"
+                "git_repository"
             )
+            if(BemanInfra_error)
+                message(
+                    FATAL_ERROR
+                    "${BemanExemplar_errorPrefix}: ${BemanExemplar_error}"
+                )
+            endif()
         endif()
 
         # Get the "git_tag" field and store it in BemanInfra_tag
