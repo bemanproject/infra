@@ -1,6 +1,6 @@
 include_guard(GLOBAL)
 
-cmake_minimum_required (VERSION 4.2)
+cmake_minimum_required(VERSION 4.2)
 
 set(BUILD_TELEMETRY_DIR ${CMAKE_CURRENT_LIST_DIR})
 
