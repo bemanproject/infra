@@ -1,17 +1,36 @@
 include_guard(GLOBAL)
 
-cmake_minimum_required(VERSION 4.2)
-
 set(BUILD_TELEMETRY_DIR ${CMAKE_CURRENT_LIST_DIR})
 
 function(configure_build_telemetry)
     if(NOT BUILD_TELEMETRY_CONFIGURATION)
-        message(WARNING "Configuring Bloomberg Build Telemetry")
+        message(WARNING "Configuring Build Telemetry")
 
-        # Enable experimental feature!!
-        set(CMAKE_EXPERIMENTAL_INSTRUMENTATION
-            ec7aa2dc-b87f-45a3-8022-fe01c5f59984
-        )
+        # Check if the CMake version is at least 4.2
+        if(CMAKE_VERSION VERSION_LESS "4.2")
+            message(
+                WARNING
+                "CMake version is less than 4.2, configuring cmake_instrumentation is unavailable."
+            )
+            return()
+        endif()
+
+        if(CMAKE_MAJOR_VERSION EQUAL 4)
+            if(CMAKE_MINOR_VERSION EQUAL 2)
+                # Enable experimental feature for 4.2
+                set(CMAKE_EXPERIMENTAL_INSTRUMENTATION
+                    ec7aa2dc-b87f-45a3-8022-fe01c5f59984
+                )
+                #      elseif (CMAKE_MINOR_VERSION EQUAL 3)
+                #        # Enable experimental feature for 4.3 -- ONCE WE HAVE THE GUID
+                #        set(CMAKE_EXPERIMENTAL_INSTRUMENTATION ec7aa2dc-b87f-45a3-8022-fe01c5f59984)
+            else()
+                message(
+                    WARNING
+                    "Value for CMAKE_EXPERIMENTAL_INSTRUMENTATION is unknown, attempting to configure without gate set."
+                )
+            endif()
+        endif()
 
         # Telemetry query
         cmake_instrumentation(
@@ -27,7 +46,7 @@ function(configure_build_telemetry)
             "using callback script ${BUILD_TELEMETRY_DIR}/telemetry.sh"
         )
 
-        # Mark task as done in cache
+        # Mark configuration as done in cache
         set(BUILD_TELEMETRY_CONFIGURATION
             TRUE
             CACHE INTERNAL
