@@ -19,7 +19,6 @@ include(GNUInstallDirs)
 #     [NAMESPACE <namespace>]
 #     [EXPORT_NAME <export-name>]
 #     [DESTINATION <install-prefix>]
-#     [VERSION_SUFFIX]
 #   )
 #
 # Arguments:
@@ -49,9 +48,6 @@ include(GNUInstallDirs)
 # DESTINATION (optional)
 #   The install destination for CXX_MODULES.
 #   Defaults to ${CMAKE_INSTALL_LIBDIR}/cmake/${name}/modules.
-#
-# VERSION_SUFFIX (optional)
-#   option to enable the versioning of install destinations
 #
 # Brief
 # -----
@@ -86,7 +82,6 @@ function(beman_install_library name)
     # ----------------------------
     # Argument parsing
     # ----------------------------
-    set(options VERSION_SUFFIX)
     set(oneValueArgs NAMESPACE EXPORT_NAME DESTINATION)
     set(multiValueArgs TARGETS DEPENDENCIES)
 
@@ -113,13 +108,7 @@ function(beman_install_library name)
         return()
     endif()
 
-    # gersemi: off
-    if(BEMAN_VERSION_SUFFIX)
-        set(_version_suffix "-${PROJECT_VERSION}")
-        set(_include_install_dir DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/beman${_version_suffix})
-    endif()
-    set(_config_install_dir "${CMAKE_INSTALL_LIBDIR}/cmake/${name}${_version_suffix}")
-    # gersemi: on
+    set(_config_install_dir "${CMAKE_INSTALL_LIBDIR}/cmake/${name}")
 
     # ----------------------------
     # Defaults
@@ -192,7 +181,6 @@ function(beman_install_library name)
                     _install_header_set_args
                     FILE_SET
                     "${_install_header_set}"
-                    ${_include_install_dir}
                     COMPONENT
                     "${install_component_name}_Development"
                 )
