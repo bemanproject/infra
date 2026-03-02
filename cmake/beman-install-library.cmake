@@ -114,12 +114,9 @@ function(beman_install_library name)
     endif()
 
     # gersemi: off
-    # NOTE: If one of this variables is not set, the default DESTINATION is used! CK
     if(BEMAN_VERSION_SUFFIX)
         set(_version_suffix "-${PROJECT_VERSION}")
         set(_include_install_dir DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/beman${_version_suffix})
-        # set(_lib_install_dir DESTINATION ${CMAKE_INSTALL_LIBDIR}/beman${_version_suffix})
-        # set(_bin_install_dir DESTINATION ${CMAKE_INSTALL_BINDIR}/beman${_version_suffix})
     endif()
     set(_config_install_dir "${CMAKE_INSTALL_LIBDIR}/cmake/${name}${_version_suffix}")
     # gersemi: on
@@ -214,39 +211,27 @@ function(beman_install_library name)
             install(
                 TARGETS "${_tgt}"
                 EXPORT ${BEMAN_EXPORT_NAME}
-                ARCHIVE
-                    ${_lib_install_dir}
-                    COMPONENT "${install_component_name}_Development"
+                ARCHIVE COMPONENT "${install_component_name}_Development"
                 LIBRARY
-                    ${_lib_install_dir}
                     COMPONENT "${install_component_name}_Runtime"
                     NAMELINK_COMPONENT "${install_component_name}_Development"
-                RUNTIME
-                    ${_bin_install_dir}
-                    COMPONENT "${install_component_name}_Runtime"
+                RUNTIME COMPONENT "${install_component_name}_Runtime"
                 ${_install_header_set_args}
                 FILE_SET ${_module_sets}
                     DESTINATION "${BEMAN_DESTINATION}"
                     COMPONENT "${install_component_name}_Development"
-                # NOTE: There's currently no convention for this location! CK
                 CXX_MODULES_BMI
-                # TODO(CK): DESTINATION ${_config_install_dir}/bmi-${CMAKE_CXX_COMPILER_ID}_$<CONFIG>
-                COMPONENT "${install_component_name}_Development"
+                    COMPONENT "${install_component_name}_Development"
             )
         else()
             install(
                 TARGETS "${_tgt}"
                 EXPORT ${BEMAN_EXPORT_NAME}
-                ARCHIVE
-                    ${_lib_install_dir}
-                    COMPONENT "${install_component_name}_Development"
+                ARCHIVE COMPONENT "${install_component_name}_Development"
                 LIBRARY
-                    ${_lib_install_dir}
                     COMPONENT "${install_component_name}_Runtime"
                     NAMELINK_COMPONENT "${install_component_name}_Development"
-                RUNTIME
-                    ${_bin_install_dir}
-                    COMPONENT "${install_component_name}_Runtime"
+                RUNTIME COMPONENT "${install_component_name}_Runtime"
                 ${_install_header_set_args}
             )
         endif()
