@@ -252,35 +252,30 @@ function(beman_install_library name)
 
     # ----------------------------------------
     # Config file installation logic
+    #
+    # Precedence (highest to lowest):
+    #   1. Per-package variable <PREFIX>_INSTALL_CONFIG_FILE_PACKAGE
+    #   2. Allow-list BEMAN_INSTALL_CONFIG_FILE_PACKAGES (if defined)
+    #   3. Default: ON
     # ----------------------------------------
     string(TOUPPER "${name}" _pkg_upper)
     string(REPLACE "." "_" _pkg_prefix "${_pkg_upper}")
 
-    option(
-        ${_pkg_prefix}_INSTALL_CONFIG_FILE_PACKAGE
-        "Enable creating and installing a CMake config-file package. Default: ON. Values: { ON, OFF }."
-        ON
-    )
-
     set(_pkg_var "${_pkg_prefix}_INSTALL_CONFIG_FILE_PACKAGE")
 
-    if(NOT DEFINED ${_pkg_var})
-        set(${_pkg_var}
-            OFF
-            CACHE BOOL
-            "Install CMake package config files for ${name}"
-        )
+    # Default: install config files
+    set(_install_config ON)
+
+    # If the allow-list is defined, only install for packages in the list
+    if(DEFINED BEMAN_INSTALL_CONFIG_FILE_PACKAGES)
+        if(NOT "${name}" IN_LIST BEMAN_INSTALL_CONFIG_FILE_PACKAGES)
+            set(_install_config OFF)
+        endif()
     endif()
 
-    set(_install_config OFF)
-
-    if(${_pkg_var})
-        set(_install_config ON)
-    elseif(BEMAN_INSTALL_CONFIG_FILE_PACKAGES)
-        list(FIND BEMAN_INSTALL_CONFIG_FILE_PACKAGES "${name}" _idx)
-        if(NOT _idx EQUAL -1)
-            set(_install_config ON)
-        endif()
+    # Per-package override takes highest precedence
+    if(DEFINED ${_pkg_var})
+        set(_install_config ${${_pkg_var}})
     endif()
 
     # ----------------------------------------
