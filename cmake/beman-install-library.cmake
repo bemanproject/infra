@@ -32,10 +32,14 @@ include(GNUInstallDirs)
 #   List of CMake targets to install.
 #
 # DEPENDENCIES (optional)
-#   Semicolon-separated list, one dependency per entry.
-#   Each entry is a valid find_dependency() argument list.
-#   Note: you must use the bracket form for quoting if not only a package name is used!
-#   "[===[beman.inplace_vector 1.0.0]===] [===[beman.scope 0.0.1 EXACT]===] fmt"
+#   List of find_dependency() argument lists. Each quoted element becomes
+#   one find_dependency() call in the generated config file. Simple
+#   package names do not need quoting; entries with version or EXACT
+#   arguments must be quoted so CMake preserves them as a single list
+#   element.
+#
+#   Example:
+#     DEPENDENCIES fmt "beman.inplace_vector 1.0.0" "beman.scope 0.0.1 EXACT"
 #
 # NAMESPACE (optional)
 #   Namespace for exported targets.
@@ -274,7 +278,7 @@ function(beman_install_library name)
     # expand dependencies
     # ----------------------------------------
     set(_beman_find_deps "")
-    foreach(dep IN ITEMS ${BEMAN_DEPENDENCIES})
+    foreach(dep IN LISTS BEMAN_DEPENDENCIES)
         message(
             VERBOSE
             "beman-install-library(${name}): Add find_dependency(${dep})"
