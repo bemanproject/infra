@@ -116,6 +116,10 @@ function(beman_install_library name)
     endif()
 
     # gersemi: off
+    set(_version_suffix)
+    set(_include_install_dir)
+    set(_lib_install_dir)
+    set(_bin_install_dir)
     # NOTE: If one of this variables is not set, the default DESTINATION is used! CK
     if(BEMAN_VERSION_SUFFIX)
         set(_version_suffix "-${PROJECT_VERSION}")
@@ -232,8 +236,9 @@ function(beman_install_library name)
                     COMPONENT "${install_component_name}_Development"
                 # NOTE: There's currently no convention for this location! CK
                 CXX_MODULES_BMI
-                # TODO(CK): DESTINATION ${_config_install_dir}/bmi-${CMAKE_CXX_COMPILER_ID}_$<CONFIG>
-                COMPONENT "${install_component_name}_Development"
+                    DESTINATION
+                        ${_config_install_dir}/bmi-${CMAKE_CXX_COMPILER_ID}_$<CONFIG>
+                    COMPONENT "${install_component_name}_Development"
             )
         else()
             install(
@@ -304,7 +309,7 @@ function(beman_install_library name)
     # expand dependencies
     # ----------------------------------------
     set(_beman_find_deps "")
-    foreach(dep IN ITEMS ${BEMAN_DEPENDENCIES})
+    foreach(dep IN LISTS BEMAN_DEPENDENCIES)
         message(
             VERBOSE
             "beman-install-library(${name}): Add find_dependency(${dep})"
