@@ -29,12 +29,19 @@ function(configure_build_telemetry)
 
         # Telemetry query
         cmake_instrumentation(
-          API_VERSION 1
-          DATA_VERSION 1
-
-          OPTIONS staticSystemInformation dynamicSystemInformation trace
-          HOOKS postGenerate preBuild postBuild preCMakeBuild postCMakeBuild postCMakeInstall postCTest
-          CALLBACK ${BEMAN_BASH} ${BUILD_TELEMETRY_DIR}/telemetry.sh
+            API_VERSION 1
+            DATA_VERSION 1
+            OPTIONS staticSystemInformation dynamicSystemInformation trace
+            HOOKS
+                postGenerate
+                preBuild
+                postBuild
+                preCMakeBuild
+                postCMakeBuild
+                postCMakeInstall
+                postCTest
+            CALLBACK ${BEMAN_BASH}
+            ${BUILD_TELEMETRY_DIR}/telemetry.sh
         )
         message(
             DEBUG
