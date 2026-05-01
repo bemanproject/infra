@@ -31,7 +31,7 @@ add_library(beman::something ALIAS beman.something)
 
 # ... configure your target as needed ...
 
-find_package(beman-install-library REQUIRED)
+include(infra/cmake/beman-install-library.cmake)
 beman_install_library(beman.something)
 ```
 
